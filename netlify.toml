@@ -5,6 +5,7 @@
   package = "@netlify/plugin-nextjs"
 
 [build.environment]
+  NODE_ENV = "production"
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps --include=dev"
   SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES = "production"

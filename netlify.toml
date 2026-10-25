@@ -1,10 +1,12 @@
 [build]
-  command = "npm run build"
+  # Let Next.js choose its build mode instead of inheriting a non-standard NODE_ENV.
+  command = "env -u NODE_ENV npm run build"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
 [build.environment]
-  NODE_ENV = "production"
-  NODE_VERSION = "20"
+  # NODE_ENV is framework configuration, not a secret.
+  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV"
+  NODE_VERSION = "22"
   NPM_FLAGS = "--legacy-peer-deps --include=dev"

@@ -117,15 +117,16 @@ export async function getDb(): Promise<{ db: Db | null; isFallback: boolean }> {
   try {
     if (!client) {
       client = new MongoClient(uri, {
-        serverSelectionTimeoutMS: 2000,
+        serverSelectionTimeoutMS: 5000,
+        connectTimeoutMS: 10000,
+        maxPoolSize: 10,
       });
       await client.connect();
     }
-    db = client.db();
+    db = client.db("vaultguard");
     return { db, isFallback: false };
   } catch (err) {
-    console.warn("MongoDB connection failed or timed out. Using local persistent storage fallback.");
-    useFallback = true;
+    console.warn("MongoDB connection failed or timed out. Using local persistent storage fallback.", err);
     return { db: null, isFallback: true };
   }
 }

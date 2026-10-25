@@ -1,0 +1,9 @@
+VAULTGUARD EMERGENCY RECOVERY KEY
+Account: test@gmail.com
+Generated: 2026-10-25T09:21:54.676Z
+
+RECOVERY KEY:
+7QL7-LNA6-JEQL-TDLH-REU3-BGQH-P4SB-JMX8
+
+IMPORTANT:
+Keep this file in a safe, offline location (such as an encrypted USB drive or printed on paper). Because VaultGuard is zero-knowledge, if you lose your Master Password, this key is the only method to restore access to your encrypted vault.

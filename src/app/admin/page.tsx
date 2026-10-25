@@ -19,13 +19,13 @@ import {
   Lock,
 } from "lucide-react";
 import { AdminUserView, AdminSystemStats } from "@/types";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { PasswordInput } from "@/components/ui/PasswordInput";
-import { Modal } from "@/components/ui/Modal";
-import { useToast } from "@/components/ui/Toast";
-import { Tooltip } from "@/components/ui/Tooltip";
-import { TableRowSkeleton, MetricSkeleton } from "@/components/ui/Skeleton";
+import { Button } from "../../components/ui/Button";
+import { Input } from "../../components/ui/Input";
+import { PasswordInput } from "../../components/ui/PasswordInput";
+import { Modal } from "../../components/ui/Modal";
+import { useToast } from "../../components/ui/Toast";
+import { Tooltip } from "../../components/ui/Tooltip";
+import { TableRowSkeleton, MetricSkeleton } from "../../components/ui/Skeleton";
 import { getRandomBytes, bytesToBase64 } from "@/lib/crypto/random";
 import {
   deriveKeyEncryptionKey,

@@ -15,8 +15,8 @@ import {
   Lock,
   ArrowLeft,
 } from "lucide-react";
-import { ThemeToggle } from "@/components/layout/ThemeToggle";
-import { Tooltip } from "@/components/ui/Tooltip";
+import { ThemeToggle } from "../../components/layout/ThemeToggle";
+import { Tooltip } from "../../components/ui/Tooltip";
 
 export default function AdminLayout({
   children,

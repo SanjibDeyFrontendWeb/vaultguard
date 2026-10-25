@@ -10,11 +10,11 @@ import {
   ArrowRight,
   ArrowLeft,
 } from "lucide-react";
-import { Input } from "@/components/ui/Input";
-import { PasswordInput } from "@/components/ui/PasswordInput";
-import { Button } from "@/components/ui/Button";
-import { ThemeToggle } from "@/components/layout/ThemeToggle";
-import { useToast } from "@/components/ui/Toast";
+import { Input } from "../../../components/ui/Input";
+import { PasswordInput } from "../../../components/ui/PasswordInput";
+import { Button } from "../../../components/ui/Button";
+import { ThemeToggle } from "../../../components/layout/ThemeToggle";
+import { useToast } from "../../../components/ui/Toast";
 
 export default function AdminLoginPage() {
   const router = useRouter();

@@ -31,12 +31,12 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { DeviceSession, SecurityEvent } from "@/types";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Modal } from "@/components/ui/Modal";
-import { Skeleton } from "@/components/ui/Skeleton";
-import { useToast } from "@/components/ui/Toast";
-import { Tooltip } from "@/components/ui/Tooltip";
+import { Button } from "../../../../components/ui/Button";
+import { Input } from "../../../../components/ui/Input";
+import { Modal } from "../../../../components/ui/Modal";
+import { Skeleton } from "../../../../components/ui/Skeleton";
+import { useToast } from "../../../../components/ui/Toast";
+import { Tooltip } from "../../../../components/ui/Tooltip";
 
 interface UserDetailData {
   user: {

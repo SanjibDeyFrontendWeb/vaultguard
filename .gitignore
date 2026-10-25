@@ -26,10 +26,6 @@ vaultguard-emergency-key-*.txt
 # Environment files (keep .env.example, ignore all actual secret configs)
 .env
 .env*.local
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
 # Debug logs
 npm-debug.log*

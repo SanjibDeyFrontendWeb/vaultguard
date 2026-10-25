@@ -26,14 +26,13 @@ import Image from "next/image";
 
 export function Navbar() {
   const pathname = usePathname();
+  const { user, isUnlocked, lockVault, logout, healthCheck } = useVault();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Hide customer navbar on dedicated Super Admin portal
   if (pathname?.startsWith("/admin")) {
     return null;
   }
-
-  const { user, isUnlocked, lockVault, logout, healthCheck } = useVault();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const hasSecurityIssues =
     healthCheck && (healthCheck.reusedCount > 0 || healthCheck.weakCount > 0);

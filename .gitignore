@@ -19,7 +19,9 @@ next-env.d.ts.bak
 
 # Local Database & Secrets
 /.data/
+/MongoDB/
 *.pem
+vaultguard-emergency-key-*.txt
 
 # Environment files (keep .env.example, ignore all actual secret configs)
 .env

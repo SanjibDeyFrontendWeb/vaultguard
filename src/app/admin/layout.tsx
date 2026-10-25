@@ -31,8 +31,8 @@ export default function AdminLayout({
   const isLoginPage = pathname === "/admin/login";
 
   useEffect(() => {
-    // If admin is already authenticated and navigating within the admin area, avoid blocking UI
-    if (adminEmail && !isLoginPage) {
+    // If on the login page, no need to verify or redirect
+    if (isLoginPage) {
       setIsChecking(false);
       return;
     }
@@ -44,36 +44,31 @@ export default function AdminLayout({
           const data = await res.json();
           if (data.authenticated) {
             setAdminEmail(data.admin.email);
-            if (isLoginPage) {
-              router.push("/admin");
-            }
-          } else {
-            setAdminEmail(null);
-            if (!isLoginPage) {
-              router.push("/admin/login");
-            }
+            setIsChecking(false);
+            return;
           }
         }
+        // Not authenticated: redirect to login
+        setAdminEmail(null);
+        window.location.href = "/admin/login";
       } catch (err) {
-        if (!isLoginPage) {
-          router.push("/admin/login");
-        }
-      } finally {
-        setIsChecking(false);
+        setAdminEmail(null);
+        window.location.href = "/admin/login";
       }
     }
 
     checkAuth();
-  }, [pathname, isLoginPage, router, adminEmail]);
+  }, [pathname, isLoginPage]);
 
   const handleLogout = async () => {
     try {
       await fetch("/api/admin/auth/logout", { method: "POST" });
     } catch {}
-    router.push("/admin/login");
+    setAdminEmail(null);
+    window.location.href = "/admin/login";
   };
 
-  // If on login page, render clean container
+  // If on login page, render clean container immediately
   if (isLoginPage) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200">
@@ -82,8 +77,22 @@ export default function AdminLayout({
     );
   }
 
-  // If checking authentication or not authenticated, render nothing and let redirect take place
-  if (isChecking || !adminEmail) {
+  // If checking authentication, show clean loader instead of blank screen
+  if (isChecking) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+          <span className="text-xs text-slate-500 font-medium tracking-wide">
+            Verifying Super Admin session...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  // If not authenticated, redirect is happening
+  if (!adminEmail) {
     return null;
   }
 

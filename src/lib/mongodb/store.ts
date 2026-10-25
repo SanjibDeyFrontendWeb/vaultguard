@@ -45,7 +45,6 @@ interface InMemoryDB {
 
 let client: MongoClient | null = null;
 let db: Db | null = null;
-let useFallback = false;
 
 const FALLBACK_DIR = path.join(process.cwd(), ".data");
 const FALLBACK_FILE = path.join(FALLBACK_DIR, "vaultguard_db.json");
@@ -106,7 +105,7 @@ function saveFallbackData(data: InMemoryDB) {
 export async function getDb(): Promise<{ db: Db | null; isFallback: boolean }> {
   const uri = process.env.MONGODB_URI;
 
-  if (!uri || uri.trim() === "" || useFallback) {
+  if (!uri || uri.trim() === "") {
     return { db: null, isFallback: true };
   }
 

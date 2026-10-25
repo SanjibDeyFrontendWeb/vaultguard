@@ -69,9 +69,10 @@ export function verifyAdminSessionToken(token: string): AdminSession | null {
 export async function setAdminSessionCookie(session: AdminSession): Promise<void> {
   const token = createAdminSessionToken(session);
   const cookieStore = await cookies();
+  const isHttps = Boolean(process.env.NETLIFY || process.env.VERCEL) || Boolean(process.env.NEXT_PUBLIC_APP_URL?.startsWith("https://"));
   cookieStore.set(ADMIN_COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isHttps,
     sameSite: "lax",
     path: "/",
     maxAge: ADMIN_SESSION_TTL_SECONDS,

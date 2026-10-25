@@ -49,7 +49,7 @@ export default function AdminLoginPage() {
       }
 
       showToast("Super Admin authenticated successfully!", "success");
-      router.push("/admin");
+      window.location.href = "/admin";
     } catch (err: any) {
       setError(err?.message || "Failed to authenticate Super Admin.");
     } finally {

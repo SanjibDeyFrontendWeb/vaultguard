@@ -59,9 +59,10 @@ export function verifySessionToken(token: string): UserSession | null {
 export async function setSessionCookie(session: UserSession): Promise<void> {
   const token = createSessionToken(session);
   const cookieStore = await cookies();
+  const isHttps = Boolean(process.env.NETLIFY || process.env.VERCEL) || Boolean(process.env.NEXT_PUBLIC_APP_URL?.startsWith("https://"));
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isHttps,
     sameSite: "lax",
     path: "/",
     maxAge: SESSION_TTL_SECONDS,

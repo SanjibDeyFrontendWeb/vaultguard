@@ -115,30 +115,6 @@ export function Navbar() {
               <Image src={"/VaultGuardLogo_250x66.png"} alt="VaultGuard Logo" width={170} height={44} className="max-w-full h-full object-cover" />
             </div>
           </Link>
-
-          {/* Desktop Navigation Links */}
-          {user && (
-            <nav className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => {
-                const Icon = link.icon;
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${isActive
-                      ? "bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-semibold shadow-xs"
-                      : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60"
-                      }`}
-                  >
-                    <Icon className="w-4 h-4 shrink-0" />
-                    <span>{link.name}</span>
-                    {link.badge}
-                  </Link>
-                );
-              })}
-            </nav>
-          )}
         </div>
 
         {/* Right Action Bar */}
@@ -187,17 +163,12 @@ export function Navbar() {
                   aria-label="User account menu"
                   aria-expanded={userDropdownOpen}
                 >
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-[11px] shadow-xs">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-[11px] shadow-xs shrink-0">
                     {user.name ? user.name[0].toUpperCase() : user.email[0].toUpperCase()}
                   </div>
-                  <div className="hidden sm:flex flex-col text-left">
-                    <span className="font-semibold text-slate-800 dark:text-slate-200 max-w-[120px] truncate leading-tight">
-                      {user.name || user.email.split("@")[0]}
-                    </span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400 max-w-[120px] truncate leading-tight">
-                      {user.email}
-                    </span>
-                  </div>
+                  <span className="font-semibold text-slate-800 dark:text-slate-200 max-w-[120px] truncate leading-tight">
+                    {user.name ? user.name.trim().split(/\s+/)[0] : user.email.split("@")[0]}
+                  </span>
                   <ChevronDown
                     className={`w-3.5 h-3.5 text-slate-500 dark:text-slate-400 transition-transform duration-200 ${
                       userDropdownOpen ? "rotate-180" : ""

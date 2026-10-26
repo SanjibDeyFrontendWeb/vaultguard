@@ -22,6 +22,7 @@ next-env.d.ts.bak
 /MongoDB/
 *.pem
 vaultguard-emergency-key-*.txt
+vaultguard-recovery-key-*.txt
 
 # Environment files (keep .env.example, ignore all actual secret configs)
 .env

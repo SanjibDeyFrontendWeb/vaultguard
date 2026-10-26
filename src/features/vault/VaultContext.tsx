@@ -538,13 +538,21 @@ export function VaultProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-    } catch {}
+    // 1. Immediately wipe in-memory sensitive keys and user session state
     lockVault();
     setUser(null);
     setVaultMeta(null);
+    setItems([]);
+    setRawStoredItems([]);
+
+    // 2. Fire backend session revocation with keepalive and redirect immediately
     if (typeof window !== "undefined") {
+      try {
+        fetch("/api/auth/logout", {
+          method: "POST",
+          keepalive: true,
+        }).catch(() => {});
+      } catch {}
       window.location.href = "/login";
     }
   };

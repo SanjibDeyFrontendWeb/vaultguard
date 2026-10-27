@@ -126,8 +126,8 @@ export function Sidebar({
   const allTags = Array.from(new Set([...DEFAULT_TAGS, ...customTags, ...itemTags]));
 
   return (
-    <aside className="w-64 shrink-0 border-r border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/40 p-4 hidden md:flex md:flex-col justify-between h-[calc(100vh-4rem)] overflow-y-auto">
-      <div className="space-y-6">
+    <aside className="w-64 shrink-0 border-r border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/40 p-4 hidden md:flex md:flex-col justify-between h-[calc(100vh-4rem)] overflow-hidden">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-6 pr-1">
         {/* Categories Section */}
         <div>
           <h3 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2 px-2">
@@ -138,40 +138,34 @@ export function Sidebar({
               const Icon = item.icon;
               const isActive = selectedType === item.id && !selectedTag;
               return (
-                <Tooltip
+                <button
                   key={item.id}
-                  content={`Filter: ${item.label} (${item.count} items)`}
-                  position="right"
-                  wrapperClassName="w-full"
+                  onClick={() => {
+                    onSelectTag(null);
+                    onSelectType(item.id);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                    isActive
+                      ? "bg-blue-600 text-white shadow-sm shadow-blue-500/20"
+                      : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-800/60"
+                  }`}
                 >
-                  <button
-                    onClick={() => {
-                      onSelectTag(null);
-                      onSelectType(item.id);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      isActive
-                        ? "bg-blue-600 text-white shadow-sm shadow-blue-500/20"
-                        : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-800/60"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Icon className="w-4 h-4 shrink-0" />
-                      <span>{item.label}</span>
-                    </div>
-                    {isUnlocked && (
-                      <span
-                        className={`text-[11px] px-1.5 py-0.2 rounded-md ${
-                          isActive
-                            ? "bg-white/20 text-white"
-                            : "bg-slate-200/80 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
-                        }`}
-                      >
-                        {item.count}
-                      </span>
-                    )}
-                  </button>
-                </Tooltip>
+                  <div className="flex items-center gap-2.5">
+                    <Icon className="w-4 h-4 shrink-0" />
+                    <span>{item.label}</span>
+                  </div>
+                  {isUnlocked && (
+                    <span
+                      className={`text-[11px] px-1.5 py-0.2 rounded-md ${
+                        isActive
+                          ? "bg-white/20 text-white"
+                          : "bg-slate-200/80 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                      }`}
+                    >
+                      {item.count}
+                    </span>
+                  )}
+                </button>
               );
             })}
           </nav>
@@ -239,31 +233,25 @@ export function Sidebar({
                   key={tag}
                   className="group relative flex items-center"
                 >
-                  <Tooltip
-                    content={`Filter by #${tag} (${count} items)`}
-                    position="right"
-                    wrapperClassName="w-full"
+                  <button
+                    onClick={() => onSelectTag(isActive ? null : tag)}
+                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
+                      isActive
+                        ? "bg-slate-900 text-white dark:bg-slate-800"
+                        : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-800/60"
+                    }`}
                   >
-                    <button
-                      onClick={() => onSelectTag(isActive ? null : tag)}
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
-                        isActive
-                          ? "bg-slate-900 text-white dark:bg-slate-800"
-                          : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-800/60"
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 truncate pr-2">
-                        <Tag className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span className="truncate">{tag}</span>
-                      </div>
+                    <div className="flex items-center gap-2 truncate pr-2">
+                      <Tag className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span className="truncate">{tag}</span>
+                    </div>
 
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        {isUnlocked && count > 0 && (
-                          <span className="text-[10px] text-slate-400 font-mono">{count}</span>
-                        )}
-                      </div>
-                    </button>
-                  </Tooltip>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {isUnlocked && count > 0 && (
+                        <span className="text-[10px] text-slate-400 font-mono">{count}</span>
+                      )}
+                    </div>
+                  </button>
 
                   {/* Delete button for user's custom tags on hover */}
                   {isCustom && (
@@ -285,33 +273,29 @@ export function Sidebar({
       </div>
 
       {/* Bottom App Navigation */}
-      <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-1">
-        <Tooltip content="Health check & active sessions" position="right" wrapperClassName="w-full">
-          <Link
-            href="/security"
-            className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
-              pathname === "/security"
-                ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
-                : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60"
-            }`}
-          >
-            <Shield className="w-4 h-4 text-blue-500" />
-            <span>Security Center</span>
-          </Link>
-        </Tooltip>
-        <Tooltip content="Auto-lock, 2FA & master password" position="right" wrapperClassName="w-full">
-          <Link
-            href="/settings"
-            className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
-              pathname === "/settings"
-                ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
-                : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60"
-            }`}
-          >
-            <Settings className="w-4 h-4 text-slate-400" />
-            <span>Settings & 2FA</span>
-          </Link>
-        </Tooltip>
+      <div className="shrink-0 pt-4 border-t border-slate-200 dark:border-slate-800 space-y-1">
+        <Link
+          href="/security"
+          className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
+            pathname === "/security"
+              ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
+              : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+          }`}
+        >
+          <Shield className="w-4 h-4 text-blue-500" />
+          <span>Security Center</span>
+        </Link>
+        <Link
+          href="/settings"
+          className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
+            pathname === "/settings"
+              ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
+              : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+          }`}
+        >
+          <Settings className="w-4 h-4 text-slate-400" />
+          <span>Settings & 2FA</span>
+        </Link>
       </div>
     </aside>
   );

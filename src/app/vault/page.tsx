@@ -97,7 +97,7 @@ export default function VaultPage() {
   }
 
   return (
-    <div className="flex-1 flex flex-col md:flex-row min-h-0">
+    <div className="flex-1 flex flex-col md:flex-row min-h-0 w-full h-[calc(100vh-4rem)] overflow-hidden">
       {/* Sidebar for Desktop */}
       <Sidebar
         selectedType={selectedType}
@@ -107,7 +107,7 @@ export default function VaultPage() {
       />
 
       {/* Main Vault Panel */}
-      <div className="flex-1 flex flex-col min-w-0 p-4 sm:p-6 lg:p-8 max-w-6xl overflow-y-auto pb-24 md:pb-8">
+      <div className="flex-1 flex flex-col min-w-0 p-4 sm:p-6 lg:p-8 max-w-6xl w-full h-full overflow-y-auto overflow-x-hidden pb-24 md:pb-8">
         {/* Top Header / Greeting */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>

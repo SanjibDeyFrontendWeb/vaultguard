@@ -41,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+      <body className="antialiased min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200 overflow-x-hidden">
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -59,7 +59,7 @@ export default function RootLayout({
         <ToastProvider>
           <VaultProvider>
             <Navbar />
-            <main className="flex-1 flex flex-col">{children}</main>
+            <main className="flex-1 flex flex-col w-full min-w-0 overflow-x-hidden">{children}</main>
           </VaultProvider>
         </ToastProvider>
       </body>

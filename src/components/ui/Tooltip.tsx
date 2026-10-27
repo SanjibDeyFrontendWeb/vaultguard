@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export type TooltipPosition = "top" | "bottom" | "left" | "right";
 
@@ -24,13 +25,47 @@ export function Tooltip({
   disabled = false,
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [coords, setCoords] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [mounted, setMounted] = useState(false);
+  const triggerRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const updatePosition = () => {
+    if (!triggerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    const gap = 8;
+
+    let top = 0;
+    let left = 0;
+
+    if (position === "top") {
+      top = rect.top - gap;
+      left = rect.left + rect.width / 2;
+    } else if (position === "bottom") {
+      top = rect.bottom + gap;
+      left = rect.left + rect.width / 2;
+    } else if (position === "left") {
+      top = rect.top + rect.height / 2;
+      left = rect.left - gap;
+    } else if (position === "right") {
+      top = rect.top + rect.height / 2;
+      left = rect.right + gap;
+    }
+
+    setCoords({ top, left });
+  };
 
   const showTooltip = () => {
     if (disabled || !content) return;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    updatePosition();
     if (delay > 0) {
       timeoutRef.current = setTimeout(() => {
+        updatePosition();
         setIsVisible(true);
       }, delay);
     } else {
@@ -43,6 +78,20 @@ export function Tooltip({
     setIsVisible(false);
   };
 
+  // Close on window scroll or resize so it stays locked with target
+  useEffect(() => {
+    if (!isVisible) return;
+    const handleScrollOrResize = () => {
+      hideTooltip();
+    };
+    window.addEventListener("scroll", handleScrollOrResize, { passive: true, capture: true });
+    window.addEventListener("resize", handleScrollOrResize, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScrollOrResize, { capture: true });
+      window.removeEventListener("resize", handleScrollOrResize);
+    };
+  }, [isVisible]);
+
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -53,12 +102,12 @@ export function Tooltip({
     return <>{children}</>;
   }
 
-  // Positioning styles
-  const positionClasses: Record<TooltipPosition, string> = {
-    top: "bottom-full left-1/2 -translate-x-1/2 mb-2",
-    bottom: "top-full left-1/2 -translate-x-1/2 mt-2",
-    left: "right-full top-1/2 -translate-y-1/2 mr-2",
-    right: "left-full top-1/2 -translate-y-1/2 ml-2",
+  // Positioning classes for transform relative to anchor point
+  const transformClasses: Record<TooltipPosition, string> = {
+    top: "-translate-x-1/2 -translate-y-full",
+    bottom: "-translate-x-1/2 translate-y-0",
+    left: "-translate-x-full -translate-y-1/2",
+    right: "translate-x-0 -translate-y-1/2",
   };
 
   // Arrow positioning styles
@@ -71,6 +120,7 @@ export function Tooltip({
 
   return (
     <div
+      ref={triggerRef}
       className={`relative inline-flex items-center ${wrapperClassName}`}
       onMouseEnter={showTooltip}
       onMouseLeave={hideTooltip}
@@ -78,20 +128,28 @@ export function Tooltip({
       onBlur={hideTooltip}
     >
       {children}
-      {isVisible && (
-        <div
-          role="tooltip"
-          className={`absolute ${positionClasses[position]} z-[100] pointer-events-none whitespace-nowrap transition-all duration-150 animate-in fade-in zoom-in-95`}
-        >
+      {mounted &&
+        isVisible &&
+        createPortal(
           <div
-            className={`px-2.5 py-1 text-[11px] font-medium tracking-tight rounded-lg shadow-lg border border-slate-700/50 dark:border-slate-200/50 bg-slate-900/95 dark:bg-slate-100 text-slate-100 dark:text-slate-900 backdrop-blur-md select-none ${className}`}
+            role="tooltip"
+            style={{
+              position: "fixed",
+              top: `${coords.top}px`,
+              left: `${coords.left}px`,
+            }}
+            className={`z-[9999] pointer-events-none whitespace-nowrap transition-all duration-150 animate-in fade-in zoom-in-95 ${transformClasses[position]}`}
           >
-            {content}
-          </div>
-          {/* Subtle pointer arrow */}
-          <div className={`absolute w-0 h-0 pointer-events-none ${arrowClasses[position]}`} />
-        </div>
-      )}
+            <div
+              className={`px-2.5 py-1 text-[11px] font-medium tracking-tight rounded-lg shadow-xl border border-slate-700/50 dark:border-slate-200/50 bg-slate-900 dark:bg-slate-100 text-slate-100 dark:text-slate-900 backdrop-blur-md select-none ${className}`}
+            >
+              {content}
+            </div>
+            {/* Subtle pointer arrow */}
+            <div className={`absolute w-0 h-0 pointer-events-none ${arrowClasses[position]}`} />
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

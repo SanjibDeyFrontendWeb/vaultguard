@@ -43,7 +43,6 @@ export default function LandingPage() {
   const [demoPassword, setDemoPassword] = useState("V4ultGu@rd#2026-Secured!");
   const [demoLength, setDemoLength] = useState(20);
   const [demoCopied, setDemoCopied] = useState(false);
-  const [comparisonView, setComparisonView] = useState<"cards" | "table">("cards");
 
   const comparisonData = [
     {
@@ -527,42 +526,10 @@ export default function LandingPage() {
           <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-2 max-w-xl mx-auto">
             See the difference between zero-knowledge encryption and legacy password managers.
           </p>
-
-          {/* Mobile View Toggle */}
-          <div className="flex md:hidden items-center justify-center mt-5">
-            <div className="inline-flex p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 text-xs font-medium">
-              <button
-                type="button"
-                onClick={() => setComparisonView("cards")}
-                className={`px-3.5 py-1.5 rounded-lg transition-all ${
-                  comparisonView === "cards"
-                    ? "bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 font-semibold shadow-xs"
-                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                Card View
-              </button>
-              <button
-                type="button"
-                onClick={() => setComparisonView("table")}
-                className={`px-3.5 py-1.5 rounded-lg transition-all ${
-                  comparisonView === "table"
-                    ? "bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 font-semibold shadow-xs"
-                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                Full Matrix
-              </button>
-            </div>
-          </div>
         </div>
 
-        {/* Mobile Responsive Card Architecture */}
-        <div
-          className={`${
-            comparisonView === "cards" ? "block md:hidden" : "hidden"
-          } space-y-3.5`}
-        >
+        {/* Mobile Responsive Card Architecture (< 640px) */}
+        <div className="block sm:hidden space-y-3.5">
           {comparisonData.map((item, idx) => (
             <div
               key={idx}
@@ -623,18 +590,8 @@ export default function LandingPage() {
           ))}
         </div>
 
-        {/* Desktop / Full Table Matrix Architecture */}
-        <div
-          className={`${
-            comparisonView === "cards" ? "hidden md:block" : "block"
-          } rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl shadow-slate-900/5 overflow-hidden`}
-        >
-          {/* Swipe indicator hint for mobile when in table mode */}
-          <div className="md:hidden px-4 py-2 bg-blue-50/70 dark:bg-blue-950/40 border-b border-blue-100 dark:border-blue-900/40 text-[11px] text-blue-600 dark:text-blue-400 flex items-center justify-between">
-            <span>Swipe horizontally to compare columns</span>
-            <span className="font-bold">↔</span>
-          </div>
-
+        {/* Tablet & Desktop Full Table Matrix Architecture (>= 640px) */}
+        <div className="hidden sm:block rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl shadow-slate-900/5 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm min-w-[580px]">
               <thead className="bg-slate-50/90 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px] sm:text-xs font-semibold">

@@ -17,6 +17,7 @@ import {
   User as UserIcon,
   ChevronDown,
   Loader2,
+  MoreVertical,
 } from "lucide-react";
 import { useVault } from "@/features/vault/VaultContext";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
@@ -28,23 +29,28 @@ export function Navbar() {
   const pathname = usePathname();
   const { user, isUnlocked, lockVault, logout, healthCheck } = useVault();
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setUserDropdownOpen(false);
       }
+      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
+        setMoreMenuOpen(false);
+      }
     }
-    if (userDropdownOpen) {
+    if (userDropdownOpen || moreMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [userDropdownOpen]);
+  }, [userDropdownOpen, moreMenuOpen]);
 
   // Fast single-click logout with button disable
   const handleFastLogout = (e?: React.MouseEvent) => {
@@ -319,25 +325,61 @@ export function Navbar() {
               </Tooltip>
             </div>
           ) : (
-            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* Sign In with Icon Button */}
               <Link
                 href="/login"
-                className={`inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-xl whitespace-nowrap transition-colors ${
+                className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-xl whitespace-nowrap transition-colors ${
                   pathname === "/login"
                     ? "bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400 font-bold"
                     : "text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60"
                 }`}
               >
-                <LogIn className="w-3.5 h-3.5 shrink-0 hidden sm:inline-block" />
+                <LogIn className="w-4 h-4 shrink-0" />
                 <span>Sign In</span>
               </Link>
+
+              {/* Desktop Get Started Button */}
               <Link
                 href="/register"
-                className="inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-sm shadow-blue-500/25 whitespace-nowrap shrink-0 transition-all active:scale-[0.98]"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-semibold rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-sm shadow-blue-500/25 whitespace-nowrap shrink-0 transition-all active:scale-[0.98]"
               >
-                <UserPlus className="w-3.5 h-3.5 shrink-0 hidden sm:inline-block" />
+                <UserPlus className="w-4 h-4 shrink-0" />
                 <span>Get Started</span>
               </Link>
+
+              {/* Mobile Vertical 3-Dot Menu Button & Dropdown */}
+              <div className="relative sm:hidden" ref={moreMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setMoreMenuOpen(!moreMenuOpen)}
+                  className={`p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border transition-all ${
+                    moreMenuOpen
+                      ? "bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-blue-600 dark:text-blue-400"
+                      : "border-transparent hover:border-slate-200 dark:hover:border-slate-800"
+                  }`}
+                  aria-label="More options"
+                  aria-expanded={moreMenuOpen}
+                >
+                  <MoreVertical className="w-4 h-4" />
+                </button>
+
+                {moreMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-900/10 dark:shadow-black/40 p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+                      Quick Access
+                    </div>
+                    <Link
+                      href="/register"
+                      onClick={() => setMoreMenuOpen(false)}
+                      className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-sm shadow-blue-500/25 transition-all active:scale-[0.98]"
+                    >
+                      <UserPlus className="w-4 h-4 shrink-0" />
+                      <span>Get Started</span>
+                    </Link>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>

@@ -43,6 +43,45 @@ export default function LandingPage() {
   const [demoPassword, setDemoPassword] = useState("V4ultGu@rd#2026-Secured!");
   const [demoLength, setDemoLength] = useState(20);
   const [demoCopied, setDemoCopied] = useState(false);
+  const [comparisonView, setComparisonView] = useState<"cards" | "table">("cards");
+
+  const comparisonData = [
+    {
+      feature: "Zero-Knowledge Architecture",
+      description: "Decryption keys never touch our servers",
+      vaultGuard: "Yes (100% Client-Side)",
+      legacyCloud: "Partial / Server Decrypted",
+      browserBuiltIn: "No",
+    },
+    {
+      feature: "Encryption Standard",
+      description: "Cryptographic cipher & key derivation",
+      vaultGuard: "AES-256-GCM + PBKDF2",
+      legacyCloud: "Varies (Often CBC)",
+      browserBuiltIn: "OS Keychain",
+    },
+    {
+      feature: "Local Password Health Audit",
+      description: "Real-time entropy & leak checks in browser",
+      vaultGuard: "In-Memory Client Only",
+      legacyCloud: "Requires Server Sync",
+      browserBuiltIn: "Basic",
+    },
+    {
+      feature: "Offline Emergency Recovery Key",
+      description: "Cryptographic paper backup key",
+      vaultGuard: "32-Char Base32 Key",
+      legacyCloud: "Email Verification Only",
+      browserBuiltIn: "No",
+    },
+    {
+      feature: "Clipboard Auto-Clear Timer",
+      description: "Memory wipe after copying passwords",
+      vaultGuard: "30 Seconds Auto-Destruct",
+      legacyCloud: "Optional / Manual",
+      browserBuiltIn: "No",
+    },
+  ];
 
   const entropy = calculatePasswordEntropy(demoPassword);
 
@@ -77,7 +116,8 @@ export default function LandingPage() {
           {/* Trust Pill */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50/80 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-blue-800/80 text-xs font-semibold mb-6 shadow-xs backdrop-blur-sm animate-in fade-in slide-in-from-top-3">
             <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-            <span>Zero-Knowledge • AES-256-GCM + PBKDF2 (310,000 Iterations)</span>
+            <span className="sm:hidden">Zero-Knowledge Encryption</span>
+            <span className="hidden sm:inline">Zero-Knowledge • AES-256-GCM + PBKDF2 (310,000 Iterations)</span>
           </div>
 
           {/* Heading */}
@@ -478,70 +518,179 @@ export default function LandingPage() {
       </section>
 
       {/* Comparison Table */}
-      <section className="py-20 max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
+      <section className="py-16 md:py-24 max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-8 md:mb-12">
           <Badge variant="blue">SECURITY COMPARISON</Badge>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-slate-100 mt-2 font-heading">
             How VaultGuard Compares
           </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-2 max-w-xl mx-auto">
             See the difference between zero-knowledge encryption and legacy password managers.
           </p>
+
+          {/* Mobile View Toggle */}
+          <div className="flex md:hidden items-center justify-center mt-5">
+            <div className="inline-flex p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 text-xs font-medium">
+              <button
+                type="button"
+                onClick={() => setComparisonView("cards")}
+                className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                  comparisonView === "cards"
+                    ? "bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 font-semibold shadow-xs"
+                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                Card View
+              </button>
+              <button
+                type="button"
+                onClick={() => setComparisonView("table")}
+                className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                  comparisonView === "table"
+                    ? "bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 font-semibold shadow-xs"
+                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                Full Matrix
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-lg">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider font-semibold">
-              <tr>
-                <th className="p-4">Feature</th>
-                <th className="p-4 text-blue-600 dark:text-blue-400 font-bold">VaultGuard</th>
-                <th className="p-4 text-slate-400">Legacy Cloud Managers</th>
-                <th className="p-4 text-slate-400">Browser Built-In</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-600 dark:text-slate-300">
-              <tr>
-                <td className="p-4 font-semibold">Zero-Knowledge Architecture</td>
-                <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
-                  <Check className="w-4 h-4 text-emerald-500" /> Yes (100% Client-Side)
-                </td>
-                <td className="p-4 text-slate-500">Partial / Server Decrypted</td>
-                <td className="p-4 text-rose-500">No</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-semibold">Encryption Standard</td>
-                <td className="p-4 font-mono font-bold text-slate-900 dark:text-slate-100">
-                  AES-256-GCM + PBKDF2
-                </td>
-                <td className="p-4 font-mono text-slate-500">Varies (Often CBC)</td>
-                <td className="p-4 font-mono text-slate-500">OS Keychain</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-semibold">Local Password Health Audit</td>
-                <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
-                  <Check className="w-4 h-4 text-emerald-500" /> In-Memory Client Only
-                </td>
-                <td className="p-4 text-slate-500">Requires Server Sync</td>
-                <td className="p-4 text-slate-500">Basic</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-semibold">Offline Emergency Recovery Key</td>
-                <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
-                  <Check className="w-4 h-4 text-emerald-500" /> 32-Char Base32 Key
-                </td>
-                <td className="p-4 text-slate-500">Email Verification Only</td>
-                <td className="p-4 text-rose-500">No</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-semibold">Clipboard Auto-Clear Timer</td>
-                <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
-                  <Check className="w-4 h-4 text-emerald-500" /> 30 Seconds Auto-Destruct
-                </td>
-                <td className="p-4 text-slate-500">Optional / Manual</td>
-                <td className="p-4 text-rose-500">No</td>
-              </tr>
-            </tbody>
-          </table>
+        {/* Mobile Responsive Card Architecture */}
+        <div
+          className={`${
+            comparisonView === "cards" ? "block md:hidden" : "hidden"
+          } space-y-3.5`}
+        >
+          {comparisonData.map((item, idx) => (
+            <div
+              key={idx}
+              className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm transition-all"
+            >
+              <div className="mb-3">
+                <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">
+                  {item.feature}
+                </h4>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  {item.description}
+                </p>
+              </div>
+
+              {/* VaultGuard highlighted row */}
+              <div className="p-3 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 mb-2.5">
+                <div className="flex items-center justify-between text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1">
+                  <span className="flex items-center gap-1.5 font-bold">
+                    <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+                    VaultGuard
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+                    Zero-Knowledge
+                  </span>
+                </div>
+                <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 mt-1">
+                  <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <span>{item.vaultGuard}</span>
+                </div>
+              </div>
+
+              {/* Competitors comparison row */}
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800/80">
+                  <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+                    Legacy Cloud
+                  </div>
+                  <div className="text-slate-700 dark:text-slate-300 font-medium leading-tight text-[11px]">
+                    {item.legacyCloud}
+                  </div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800/80">
+                  <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+                    Browser Built-In
+                  </div>
+                  <div
+                    className={`leading-tight text-[11px] ${
+                      item.browserBuiltIn === "No"
+                        ? "text-rose-500 font-semibold"
+                        : "text-slate-700 dark:text-slate-300 font-medium"
+                    }`}
+                  >
+                    {item.browserBuiltIn}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop / Full Table Matrix Architecture */}
+        <div
+          className={`${
+            comparisonView === "cards" ? "hidden md:block" : "block"
+          } rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl shadow-slate-900/5 overflow-hidden`}
+        >
+          {/* Swipe indicator hint for mobile when in table mode */}
+          <div className="md:hidden px-4 py-2 bg-blue-50/70 dark:bg-blue-950/40 border-b border-blue-100 dark:border-blue-900/40 text-[11px] text-blue-600 dark:text-blue-400 flex items-center justify-between">
+            <span>Swipe horizontally to compare columns</span>
+            <span className="font-bold">↔</span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs sm:text-sm min-w-[580px]">
+              <thead className="bg-slate-50/90 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px] sm:text-xs font-semibold">
+                <tr>
+                  <th className="py-4 px-4 sm:px-6 w-[34%]">Feature</th>
+                  <th className="py-4 px-4 sm:px-6 bg-blue-50/60 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-bold border-x border-blue-100 dark:border-blue-900/50 w-[28%]">
+                    <div className="flex items-center gap-1.5">
+                      <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+                      <span>VaultGuard</span>
+                    </div>
+                  </th>
+                  <th className="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 w-[20%]">
+                    Legacy Cloud Managers
+                  </th>
+                  <th className="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 w-[18%]">
+                    Browser Built-In
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80 text-slate-600 dark:text-slate-300">
+                {comparisonData.map((item, idx) => (
+                  <tr
+                    key={idx}
+                    className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
+                  >
+                    <td className="py-4 px-4 sm:px-6">
+                      <div className="font-semibold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">
+                        {item.feature}
+                      </div>
+                      <div className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">
+                        {item.description}
+                      </div>
+                    </td>
+                    <td className="py-4 px-4 sm:px-6 bg-blue-50/30 dark:bg-blue-950/20 border-x border-blue-100 dark:border-blue-900/40 font-bold text-emerald-600 dark:text-emerald-400">
+                      <div className="flex items-center gap-1.5">
+                        <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                        <span>{item.vaultGuard}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4 sm:px-6 text-slate-600 dark:text-slate-400">
+                      {item.legacyCloud}
+                    </td>
+                    <td
+                      className={`py-4 px-4 sm:px-6 ${
+                        item.browserBuiltIn === "No"
+                          ? "text-rose-500 font-semibold"
+                          : "text-slate-600 dark:text-slate-400"
+                      }`}
+                    >
+                      {item.browserBuiltIn}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 

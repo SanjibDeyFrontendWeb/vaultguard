@@ -88,34 +88,28 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/85 dark:bg-slate-950/85 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
         {/* Brand Logo */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center shrink-0">
           <Link
             href={user ? "/vault" : "/"}
-            className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1"
+            className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-0.5 sm:p-1"
           >
-            {/* <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 p-0.5 shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
-              <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                <Shield className="w-5 h-5 text-blue-400 group-hover:text-cyan-300 transition-colors" />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300">
-                VaultGuard
-              </span>
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-blue-600 dark:text-cyan-400 -mt-1">
-                Zero-Knowledge
-              </span>
-            </div> */}
-            <div className="w-full h-full">
-              <Image src={"/VaultGuardLogo_250x66.png"} alt="VaultGuard Logo" width={170} height={44} className="max-w-full h-full object-cover" />
+            <div className="w-[125px] sm:w-[155px] md:w-[170px] h-auto">
+              <Image
+                src="/VaultGuardLogo_250x66.png"
+                alt="VaultGuard Logo"
+                width={170}
+                height={44}
+                priority
+                className="w-full h-auto object-contain"
+              />
             </div>
           </Link>
         </div>
 
         {/* Right Action Bar */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           {/* Vault Lock Status / Quick Lock Button */}
           {user && (
             <div className="flex items-center gap-2">
@@ -325,19 +319,23 @@ export function Navbar() {
               </Tooltip>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
               <Link
                 href="/login"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
+                className={`inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-xl whitespace-nowrap transition-colors ${
+                  pathname === "/login"
+                    ? "bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400 font-bold"
+                    : "text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60"
+                }`}
               >
-                <LogIn className="w-4 h-4" />
+                <LogIn className="w-3.5 h-3.5 shrink-0 hidden sm:inline-block" />
                 <span>Sign In</span>
               </Link>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-sm shadow-blue-500/25 transition-all"
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-sm shadow-blue-500/25 whitespace-nowrap shrink-0 transition-all active:scale-[0.98]"
               >
-                <UserPlus className="w-4 h-4" />
+                <UserPlus className="w-3.5 h-3.5 shrink-0 hidden sm:inline-block" />
                 <span>Get Started</span>
               </Link>
             </div>

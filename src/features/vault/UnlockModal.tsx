@@ -62,8 +62,8 @@ export function UnlockModal({ isOpen, onClose }: UnlockModalProps) {
       description="Enter your Master Password to decrypt and access your credentials."
       maxWidth="md"
     >
-      <form onSubmit={handleSubmit} className="space-y-4 pt-1">
-        <div className="flex items-center gap-3 p-3 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-700 dark:text-blue-300">
+      <form onSubmit={handleSubmit} className="space-y-4 pt-1 text-left">
+        <div className="flex items-center gap-3 p-3 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-700 dark:text-blue-300 text-left">
           <ShieldCheck className="w-5 h-5 shrink-0 text-blue-600 dark:text-blue-400" />
           <span>
             Decryption happens purely inside your browser using client-side AES-256-GCM. Your master password is never transmitted.
@@ -71,14 +71,14 @@ export function UnlockModal({ isOpen, onClose }: UnlockModalProps) {
         </div>
 
         {error && (
-          <div className="flex items-center gap-2 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 text-xs text-rose-700 dark:text-rose-300">
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 text-xs text-rose-700 dark:text-rose-300 text-left">
             <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />
             <span>{error}</span>
           </div>
         )}
 
-        <div className="space-y-1.5">
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+        <div className="space-y-1.5 text-left">
+          <label className="block text-left text-xs font-semibold text-slate-700 dark:text-slate-300">
             Master Password
           </label>
           <PasswordInput

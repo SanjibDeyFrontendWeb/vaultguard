@@ -603,7 +603,7 @@ export default function LandingPage() {
                       <span>VaultGuard</span>
                     </div>
                   </th>
-                  <th className="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 w-[20%]">
+                  <th className="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 w-[20%] border-r border-slate-200 dark:border-slate-800">
                     Legacy Cloud Managers
                   </th>
                   <th className="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 w-[18%]">
@@ -631,7 +631,7 @@ export default function LandingPage() {
                         <span>{item.vaultGuard}</span>
                       </div>
                     </td>
-                    <td className="py-4 px-4 sm:px-6 text-slate-600 dark:text-slate-400">
+                    <td className="py-4 px-4 sm:px-6 text-slate-600 dark:text-slate-400 border-r border-slate-100 dark:border-slate-800/80">
                       {item.legacyCloud}
                     </td>
                     <td

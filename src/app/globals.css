@@ -24,7 +24,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, .font-heading {
+h1,
+h2,
+h3,
+h4,
+.font-heading {
   font-family: var(--font-heading);
 }
 
@@ -58,4 +62,9 @@ h1, h2, h3, h4, .font-heading {
 
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #334155;
+}
+
+body>iframe#nl-badge-frame,
+body>iframe[title="Powered by Netlify"] {
+  display: none !important;
 }

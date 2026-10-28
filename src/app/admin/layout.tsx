@@ -136,7 +136,7 @@ export default function AdminLayout({
                   alt="VaultGuard Logo"
                   width={140}
                   height={36}
-                  className="object-contain"
+                  className="object-contain site-logo"
                   priority
                 />
               </div>

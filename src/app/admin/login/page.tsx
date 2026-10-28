@@ -75,7 +75,7 @@ export default function AdminLoginPage() {
               alt="VaultGuard Logo"
               width={180}
               height={46}
-              className="object-contain"
+              className="object-contain site-logo"
             />
           </div>
 

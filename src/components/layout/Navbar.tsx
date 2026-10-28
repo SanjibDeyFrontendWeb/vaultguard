@@ -108,7 +108,7 @@ export function Navbar() {
                 width={170}
                 height={44}
                 priority
-                className="w-full h-auto object-contain"
+                className="w-full h-auto object-contain site-logo"
               />
             </div>
           </Link>

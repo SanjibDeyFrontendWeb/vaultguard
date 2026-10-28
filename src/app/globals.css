@@ -68,3 +68,11 @@ body>iframe#nl-badge-frame,
 body>iframe[title="Powered by Netlify"] {
   display: none !important;
 }
+
+/* Dark mode site logo: make crisp white everywhere using CSS grayscale, brightness, and invert */
+.dark img[src*="VaultGuardLogo"],
+.dark .site-logo {
+  filter: grayscale(100%) brightness(0) invert(1);
+  -webkit-filter: grayscale(100%) brightness(0) invert(1);
+  transition: filter 0.2s ease-in-out;
+}

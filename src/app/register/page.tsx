@@ -149,7 +149,7 @@ export default function RegisterPage() {
             </div>
           </div> */}
           <div className="w-full h-full text-center">
-            <Image src={"/VaultGuardLogo_250x66.png"} alt="VaultGuard Logo" width={200} height={50} className="max-w-full h-full mx-auto" />
+            <Image src={"/VaultGuardLogo_250x66.png"} alt="VaultGuard Logo" width={200} height={50} className="max-w-full h-full mx-auto site-logo" />
           </div>
           <h1 className="mt-4 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
             {step === "form" ? "Create Your Encrypted Vault" : "Emergency Recovery Key"}

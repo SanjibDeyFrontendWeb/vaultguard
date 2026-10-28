@@ -696,7 +696,7 @@ export default function LandingPage() {
               alt="VaultGuard"
               width={160}
               height={42}
-              className="h-8 w-auto object-contain dark:brightness-110"
+              className="h-8 w-auto object-contain site-logo"
             />
           </div>
           <div className="flex items-center gap-5">

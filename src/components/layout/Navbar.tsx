@@ -14,8 +14,6 @@ import {
   LogOut,
   LogIn,
   UserPlus,
-  Menu,
-  X,
   User as UserIcon,
   ChevronDown,
   Loader2,
@@ -29,7 +27,6 @@ import Image from "next/image";
 export function Navbar() {
   const pathname = usePathname();
   const { user, isUnlocked, lockVault, logout, healthCheck } = useVault();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -155,7 +152,7 @@ export function Navbar() {
                 <button
                   type="button"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-xl border text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 sm:gap-2 p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl border text-xs font-medium transition-all ${
                     userDropdownOpen
                       ? "bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700 shadow-xs"
                       : "bg-slate-100/70 dark:bg-slate-900/70 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
@@ -163,10 +160,10 @@ export function Navbar() {
                   aria-label="User account menu"
                   aria-expanded={userDropdownOpen}
                 >
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-[11px] shadow-xs shrink-0">
+                  <div className="w-7 h-7 sm:w-6 sm:h-6 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xs sm:text-[11px] shadow-xs shrink-0">
                     {user.name ? user.name[0].toUpperCase() : user.email[0].toUpperCase()}
                   </div>
-                  <span className="font-semibold text-slate-800 dark:text-slate-200 max-w-[120px] truncate leading-tight">
+                  <span className="hidden sm:inline-block font-semibold text-slate-800 dark:text-slate-200 max-w-[120px] truncate leading-tight">
                     {user.name ? user.name.trim().split(/\s+/)[0] : user.email.split("@")[0]}
                   </span>
                   <ChevronDown
@@ -306,13 +303,13 @@ export function Navbar() {
                 )}
               </div>
 
-              {/* Direct Fast Logout Icon with Single-Click Disable */}
+              {/* Direct Fast Logout Icon with Single-Click Disable (Desktop only) */}
               <Tooltip content="Sign out of your session" position="bottom">
                 <button
                   type="button"
                   disabled={isLoggingOut}
                   onClick={handleFastLogout}
-                  className={`p-2 rounded-xl transition-colors ${
+                  className={`hidden sm:inline-flex p-2 rounded-xl transition-colors ${
                     isLoggingOut
                       ? "text-slate-400 dark:text-slate-600 cursor-not-allowed bg-slate-100 dark:bg-slate-800"
                       : "text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30"
@@ -345,95 +342,8 @@ export function Navbar() {
               </Link>
             </div>
           )}
-
-          {/* Mobile Menu Toggle Button */}
-          {user && (
-            <Tooltip content={mobileMenuOpen ? "Close menu" : "Open menu"} position="bottom">
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                aria-label="Toggle navigation menu"
-              >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
-            </Tooltip>
-          )}
         </div>
       </div>
-
-      {/* Mobile Drawer */}
-      {user && mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md px-4 pt-3 pb-4 space-y-2 animate-in slide-in-from-top-2 duration-150">
-          <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100 dark:border-slate-800/80 text-xs text-slate-500">
-            <span className="truncate">{user.email}</span>
-            {isUnlocked ? (
-              <button
-                onClick={() => {
-                  lockVault();
-                  setMobileMenuOpen(false);
-                }}
-                className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold"
-              >
-                <Unlock className="w-3.5 h-3.5" />
-                <span>Unlocked (Lock)</span>
-              </button>
-            ) : (
-              <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400 font-semibold">
-                <Lock className="w-3.5 h-3.5" />
-                <span>Locked</span>
-              </span>
-            )}
-          </div>
-
-          {navLinks.map((link) => {
-            const Icon = link.icon;
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium ${isActive
-                  ? "bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-semibold"
-                  : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60"
-                  }`}
-              >
-                <div className="flex items-center gap-2.5">
-                  <Icon className="w-4 h-4" />
-                  <span>{link.name}</span>
-                </div>
-                {link.badge}
-              </Link>
-            );
-          })}
-
-          <button
-            type="button"
-            disabled={isLoggingOut}
-            onClick={() => {
-              setMobileMenuOpen(false);
-              handleFastLogout();
-            }}
-            className={`w-full flex items-center justify-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-              isLoggingOut
-                ? "bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed"
-                : "text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30"
-            }`}
-          >
-            {isLoggingOut ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin text-rose-500" />
-                <span>Signing Out...</span>
-              </>
-            ) : (
-              <>
-                <LogOut className="w-4 h-4" />
-                <span>Sign Out</span>
-              </>
-            )}
-          </button>
-        </div>
-      )}
     </header>
   );
 }
